@@ -9,6 +9,7 @@
 
 namespace SoporteITMAPI.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     
@@ -29,9 +30,10 @@ namespace SoporteITMAPI.Models
         public string Departamento { get; set; }
         public string Cargo { get; set; }
         public string DocumentoUsuario { get; set; }
-    
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Equipos> Equipos { get; set; }
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SolicitudesSoporte> SolicitudesSoportes { get; set; }
     }
