@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="141ca9f9bef74475b31ff74329f02fd1" Name="Diagram1">
+        <EntityTypeShape EntityType="SoporteInformaticoModel.Equipos" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteInformaticoModel.Estado" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteInformaticoModel.HistorialSolicitude" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteInformaticoModel.SolicitudesSoporte" Width="1.5" PointX="6" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteInformaticoModel.Tecnico" Width="1.5" PointX="3.75" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteInformaticoModel.Usuario" Width="1.5" PointX="1.5" PointY="8.625" IsExpanded="true" />
+        <AssociationConnector Association="SoporteInformaticoModel.FK__Equipos__idUsuar__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteInformaticoModel.FK__Solicitud__idEqu__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteInformaticoModel.FK__Historial__idEst__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteInformaticoModel.FK__Historial__idEst__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteInformaticoModel.FK__Solicitud__Estad__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteInformaticoModel.FK__Historial__idSol__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteInformaticoModel.FK__Solicitud__idTec__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteInformaticoModel.FK__Solicitud__idUsu__4316F928" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

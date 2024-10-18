@@ -1,0 +1,537 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SoporteInformaticoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Equipos">
+          <Key>
+            <PropertyRef Name="idEquipo" />
+          </Key>
+          <Property Name="idEquipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreEquipo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TipoEquipo" Type="varchar" MaxLength="50" />
+          <Property Name="NumeroSerie" Type="varchar" MaxLength="100" />
+          <Property Name="idUsuario" Type="int" />
+        </EntityType>
+        <EntityType Name="Estados">
+          <Key>
+            <PropertyRef Name="idEstado" />
+          </Key>
+          <Property Name="idEstado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DescripcionEstado" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HistorialSolicitudes">
+          <Key>
+            <PropertyRef Name="idHistorial" />
+          </Key>
+          <Property Name="idHistorial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idSolicitud" Type="int" />
+          <Property Name="FechaCambio" Type="datetime" Nullable="false" />
+          <Property Name="idEstadoAnterior" Type="int" />
+          <Property Name="idEstadoNuevo" Type="int" />
+          <Property Name="Observaciones" Type="text" />
+        </EntityType>
+        <EntityType Name="SolicitudesSoporte">
+          <Key>
+            <PropertyRef Name="idSolicitud" />
+          </Key>
+          <Property Name="idSolicitud" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" />
+          <Property Name="idTecnicoAsignado" Type="int" />
+          <Property Name="idEquipoAfectado" Type="int" />
+          <Property Name="FechaSolicitud" Type="datetime" Nullable="false" />
+          <Property Name="DescripcionProblema" Type="text" Nullable="false" />
+          <Property Name="EstadoSolicitud" Type="int" />
+          <Property Name="Prioridad" Type="varchar" MaxLength="20" />
+          <Property Name="FechaResolucion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tecnicos">
+          <Key>
+            <PropertyRef Name="idTecnico" />
+          </Key>
+          <Property Name="idTecnico" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellido" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="15" />
+          <Property Name="Especialidad" Type="varchar" MaxLength="100" />
+          <Property Name="DocumentoTecnico" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellido" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="15" />
+          <Property Name="Departamento" Type="varchar" MaxLength="50" />
+          <Property Name="Cargo" Type="varchar" MaxLength="50" />
+          <Property Name="DocumentoUsuario" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__Equipos__idUsuar__3E52440B">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="Equipos" Type="Self.Equipos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Equipos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__idEst__49C3F6B7">
+          <End Role="Estados" Type="Self.Estados" Multiplicity="0..1" />
+          <End Role="HistorialSolicitudes" Type="Self.HistorialSolicitudes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="HistorialSolicitudes">
+              <PropertyRef Name="idEstadoAnterior" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__idEst__4AB81AF0">
+          <End Role="Estados" Type="Self.Estados" Multiplicity="0..1" />
+          <End Role="HistorialSolicitudes" Type="Self.HistorialSolicitudes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="HistorialSolicitudes">
+              <PropertyRef Name="idEstadoNuevo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__idSol__48CFD27E">
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="0..1" />
+          <End Role="HistorialSolicitudes" Type="Self.HistorialSolicitudes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SolicitudesSoporte">
+              <PropertyRef Name="idSolicitud" />
+            </Principal>
+            <Dependent Role="HistorialSolicitudes">
+              <PropertyRef Name="idSolicitud" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__Estad__45F365D3">
+          <End Role="Estados" Type="Self.Estados" Multiplicity="0..1" />
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="SolicitudesSoporte">
+              <PropertyRef Name="EstadoSolicitud" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__idEqu__44FF419A">
+          <End Role="Equipos" Type="Self.Equipos" Multiplicity="0..1" />
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipos">
+              <PropertyRef Name="idEquipo" />
+            </Principal>
+            <Dependent Role="SolicitudesSoporte">
+              <PropertyRef Name="idEquipoAfectado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__idTec__440B1D61">
+          <End Role="Tecnicos" Type="Self.Tecnicos" Multiplicity="0..1" />
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tecnicos">
+              <PropertyRef Name="idTecnico" />
+            </Principal>
+            <Dependent Role="SolicitudesSoporte">
+              <PropertyRef Name="idTecnicoAsignado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__idUsu__4316F928">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="SolicitudesSoporte">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SoporteInformaticoModelStoreContainer">
+          <EntitySet Name="Equipos" EntityType="Self.Equipos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estados" EntityType="Self.Estados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistorialSolicitudes" EntityType="Self.HistorialSolicitudes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SolicitudesSoporte" EntityType="Self.SolicitudesSoporte" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tecnicos" EntityType="Self.Tecnicos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Equipos__idUsuar__3E52440B" Association="Self.FK__Equipos__idUsuar__3E52440B">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Equipos" EntitySet="Equipos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__idEst__49C3F6B7" Association="Self.FK__Historial__idEst__49C3F6B7">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="HistorialSolicitudes" EntitySet="HistorialSolicitudes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__idEst__4AB81AF0" Association="Self.FK__Historial__idEst__4AB81AF0">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="HistorialSolicitudes" EntitySet="HistorialSolicitudes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__idSol__48CFD27E" Association="Self.FK__Historial__idSol__48CFD27E">
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoporte" />
+            <End Role="HistorialSolicitudes" EntitySet="HistorialSolicitudes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Solicitud__Estad__45F365D3" Association="Self.FK__Solicitud__Estad__45F365D3">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Solicitud__idEqu__44FF419A" Association="Self.FK__Solicitud__idEqu__44FF419A">
+            <End Role="Equipos" EntitySet="Equipos" />
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Solicitud__idTec__440B1D61" Association="Self.FK__Solicitud__idTec__440B1D61">
+            <End Role="Tecnicos" EntitySet="Tecnicos" />
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoporte" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Solicitud__idUsu__4316F928" Association="Self.FK__Solicitud__idUsu__4316F928">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoporte" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SoporteInformaticoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Equipos">
+          <Key>
+            <PropertyRef Name="idEquipo" />
+          </Key>
+          <Property Name="idEquipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreEquipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TipoEquipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NumeroSerie" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuario" Type="Int32" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Equipos__idUsuar__3E52440B" FromRole="Equipos" ToRole="Usuarios" />
+          <NavigationProperty Name="SolicitudesSoportes" Relationship="Self.FK__Solicitud__idEqu__44FF419A" FromRole="Equipos" ToRole="SolicitudesSoporte" />
+        </EntityType>
+        <EntityType Name="Estado">
+          <Key>
+            <PropertyRef Name="idEstado" />
+          </Key>
+          <Property Name="idEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DescripcionEstado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="HistorialSolicitudes" Relationship="Self.FK__Historial__idEst__49C3F6B7" FromRole="Estados" ToRole="HistorialSolicitudes" />
+          <NavigationProperty Name="HistorialSolicitudes1" Relationship="Self.FK__Historial__idEst__4AB81AF0" FromRole="Estados" ToRole="HistorialSolicitudes" />
+          <NavigationProperty Name="SolicitudesSoportes" Relationship="Self.FK__Solicitud__Estad__45F365D3" FromRole="Estados" ToRole="SolicitudesSoporte" />
+        </EntityType>
+        <EntityType Name="HistorialSolicitude">
+          <Key>
+            <PropertyRef Name="idHistorial" />
+          </Key>
+          <Property Name="idHistorial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idSolicitud" Type="Int32" />
+          <Property Name="FechaCambio" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idEstadoAnterior" Type="Int32" />
+          <Property Name="idEstadoNuevo" Type="Int32" />
+          <Property Name="Observaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Estado" Relationship="Self.FK__Historial__idEst__49C3F6B7" FromRole="HistorialSolicitudes" ToRole="Estados" />
+          <NavigationProperty Name="Estado1" Relationship="Self.FK__Historial__idEst__4AB81AF0" FromRole="HistorialSolicitudes" ToRole="Estados" />
+          <NavigationProperty Name="SolicitudesSoporte" Relationship="Self.FK__Historial__idSol__48CFD27E" FromRole="HistorialSolicitudes" ToRole="SolicitudesSoporte" />
+        </EntityType>
+        <EntityType Name="SolicitudesSoporte">
+          <Key>
+            <PropertyRef Name="idSolicitud" />
+          </Key>
+          <Property Name="idSolicitud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" />
+          <Property Name="idTecnicoAsignado" Type="Int32" />
+          <Property Name="idEquipoAfectado" Type="Int32" />
+          <Property Name="FechaSolicitud" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DescripcionProblema" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EstadoSolicitud" Type="Int32" />
+          <Property Name="Prioridad" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FechaResolucion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Equipos" Relationship="Self.FK__Solicitud__idEqu__44FF419A" FromRole="SolicitudesSoporte" ToRole="Equipos" />
+          <NavigationProperty Name="Estado" Relationship="Self.FK__Solicitud__Estad__45F365D3" FromRole="SolicitudesSoporte" ToRole="Estados" />
+          <NavigationProperty Name="HistorialSolicitudes" Relationship="Self.FK__Historial__idSol__48CFD27E" FromRole="SolicitudesSoporte" ToRole="HistorialSolicitudes" />
+          <NavigationProperty Name="Tecnico" Relationship="Self.FK__Solicitud__idTec__440B1D61" FromRole="SolicitudesSoporte" ToRole="Tecnicos" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Solicitud__idUsu__4316F928" FromRole="SolicitudesSoporte" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Tecnico">
+          <Key>
+            <PropertyRef Name="idTecnico" />
+          </Key>
+          <Property Name="idTecnico" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Especialidad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DocumentoTecnico" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SolicitudesSoportes" Relationship="Self.FK__Solicitud__idTec__440B1D61" FromRole="Tecnicos" ToRole="SolicitudesSoporte" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Departamento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cargo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DocumentoUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Equipos" Relationship="Self.FK__Equipos__idUsuar__3E52440B" FromRole="Usuarios" ToRole="Equipos" />
+          <NavigationProperty Name="SolicitudesSoportes" Relationship="Self.FK__Solicitud__idUsu__4316F928" FromRole="Usuarios" ToRole="SolicitudesSoporte" />
+        </EntityType>
+        <Association Name="FK__Equipos__idUsuar__3E52440B">
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Equipos" Type="Self.Equipos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Equipos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__idEqu__44FF419A">
+          <End Role="Equipos" Type="Self.Equipos" Multiplicity="0..1" />
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipos">
+              <PropertyRef Name="idEquipo" />
+            </Principal>
+            <Dependent Role="SolicitudesSoporte">
+              <PropertyRef Name="idEquipoAfectado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__idEst__49C3F6B7">
+          <End Role="Estados" Type="Self.Estado" Multiplicity="0..1" />
+          <End Role="HistorialSolicitudes" Type="Self.HistorialSolicitude" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="HistorialSolicitudes">
+              <PropertyRef Name="idEstadoAnterior" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__idEst__4AB81AF0">
+          <End Role="Estados" Type="Self.Estado" Multiplicity="0..1" />
+          <End Role="HistorialSolicitudes" Type="Self.HistorialSolicitude" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="HistorialSolicitudes">
+              <PropertyRef Name="idEstadoNuevo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__Estad__45F365D3">
+          <End Role="Estados" Type="Self.Estado" Multiplicity="0..1" />
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="SolicitudesSoporte">
+              <PropertyRef Name="EstadoSolicitud" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__idSol__48CFD27E">
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="0..1" />
+          <End Role="HistorialSolicitudes" Type="Self.HistorialSolicitude" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SolicitudesSoporte">
+              <PropertyRef Name="idSolicitud" />
+            </Principal>
+            <Dependent Role="HistorialSolicitudes">
+              <PropertyRef Name="idSolicitud" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__idTec__440B1D61">
+          <End Role="Tecnicos" Type="Self.Tecnico" Multiplicity="0..1" />
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tecnicos">
+              <PropertyRef Name="idTecnico" />
+            </Principal>
+            <Dependent Role="SolicitudesSoporte">
+              <PropertyRef Name="idTecnicoAsignado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__idUsu__4316F928">
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="SolicitudesSoporte" Type="Self.SolicitudesSoporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="SolicitudesSoporte">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SoporteEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Equipos" EntityType="Self.Equipos" />
+          <EntitySet Name="Estados" EntityType="Self.Estado" />
+          <EntitySet Name="HistorialSolicitudes" EntityType="Self.HistorialSolicitude" />
+          <EntitySet Name="SolicitudesSoportes" EntityType="Self.SolicitudesSoporte" />
+          <EntitySet Name="Tecnicos" EntityType="Self.Tecnico" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK__Equipos__idUsuar__3E52440B" Association="Self.FK__Equipos__idUsuar__3E52440B">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Equipos" EntitySet="Equipos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Solicitud__idEqu__44FF419A" Association="Self.FK__Solicitud__idEqu__44FF419A">
+            <End Role="Equipos" EntitySet="Equipos" />
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoportes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__idEst__49C3F6B7" Association="Self.FK__Historial__idEst__49C3F6B7">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="HistorialSolicitudes" EntitySet="HistorialSolicitudes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__idEst__4AB81AF0" Association="Self.FK__Historial__idEst__4AB81AF0">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="HistorialSolicitudes" EntitySet="HistorialSolicitudes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Solicitud__Estad__45F365D3" Association="Self.FK__Solicitud__Estad__45F365D3">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoportes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__idSol__48CFD27E" Association="Self.FK__Historial__idSol__48CFD27E">
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoportes" />
+            <End Role="HistorialSolicitudes" EntitySet="HistorialSolicitudes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Solicitud__idTec__440B1D61" Association="Self.FK__Solicitud__idTec__440B1D61">
+            <End Role="Tecnicos" EntitySet="Tecnicos" />
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoportes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Solicitud__idUsu__4316F928" Association="Self.FK__Solicitud__idUsu__4316F928">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="SolicitudesSoporte" EntitySet="SolicitudesSoportes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SoporteInformaticoModelStoreContainer" CdmEntityContainer="SoporteEntities">
+          <EntitySetMapping Name="Equipos">
+            <EntityTypeMapping TypeName="SoporteInformaticoModel.Equipos">
+              <MappingFragment StoreEntitySet="Equipos">
+                <ScalarProperty Name="idEquipo" ColumnName="idEquipo" />
+                <ScalarProperty Name="NombreEquipo" ColumnName="NombreEquipo" />
+                <ScalarProperty Name="TipoEquipo" ColumnName="TipoEquipo" />
+                <ScalarProperty Name="NumeroSerie" ColumnName="NumeroSerie" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estados">
+            <EntityTypeMapping TypeName="SoporteInformaticoModel.Estado">
+              <MappingFragment StoreEntitySet="Estados">
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="DescripcionEstado" ColumnName="DescripcionEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistorialSolicitudes">
+            <EntityTypeMapping TypeName="SoporteInformaticoModel.HistorialSolicitude">
+              <MappingFragment StoreEntitySet="HistorialSolicitudes">
+                <ScalarProperty Name="idHistorial" ColumnName="idHistorial" />
+                <ScalarProperty Name="idSolicitud" ColumnName="idSolicitud" />
+                <ScalarProperty Name="FechaCambio" ColumnName="FechaCambio" />
+                <ScalarProperty Name="idEstadoAnterior" ColumnName="idEstadoAnterior" />
+                <ScalarProperty Name="idEstadoNuevo" ColumnName="idEstadoNuevo" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SolicitudesSoportes">
+            <EntityTypeMapping TypeName="SoporteInformaticoModel.SolicitudesSoporte">
+              <MappingFragment StoreEntitySet="SolicitudesSoporte">
+                <ScalarProperty Name="idSolicitud" ColumnName="idSolicitud" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idTecnicoAsignado" ColumnName="idTecnicoAsignado" />
+                <ScalarProperty Name="idEquipoAfectado" ColumnName="idEquipoAfectado" />
+                <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+                <ScalarProperty Name="DescripcionProblema" ColumnName="DescripcionProblema" />
+                <ScalarProperty Name="EstadoSolicitud" ColumnName="EstadoSolicitud" />
+                <ScalarProperty Name="Prioridad" ColumnName="Prioridad" />
+                <ScalarProperty Name="FechaResolucion" ColumnName="FechaResolucion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tecnicos">
+            <EntityTypeMapping TypeName="SoporteInformaticoModel.Tecnico">
+              <MappingFragment StoreEntitySet="Tecnicos">
+                <ScalarProperty Name="idTecnico" ColumnName="idTecnico" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+                <ScalarProperty Name="DocumentoTecnico" ColumnName="DocumentoTecnico" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="SoporteInformaticoModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Departamento" ColumnName="Departamento" />
+                <ScalarProperty Name="Cargo" ColumnName="Cargo" />
+                <ScalarProperty Name="DocumentoUsuario" ColumnName="DocumentoUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
